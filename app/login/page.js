@@ -57,7 +57,8 @@ export default function LoginPage() {
         `Check ${normalizedEmail} for your secure sign-in link. Opening it confirms that you control that CMU inbox.`
       );
       setEmail(normalizedEmail);
-    } catch {
+    } catch (submissionError) {
+      console.error("Supabase login error", submissionError);
       setError("We could not send your login link. Please try again.");
     } finally {
       setIsLoading(false);

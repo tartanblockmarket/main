@@ -11,19 +11,56 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     let isMounted = true;
+    const supabase = getSupabaseBrowserClient();
 
-    async function exchangeCode() {
-      const code = new URLSearchParams(window.location.search).get("code");
-
-      if (!code) {
-        if (isMounted) {
-          setError("The login link is missing its auth code.");
-        }
-        return;
+    function redirectToApp() {
+      if (isMounted) {
+        setMessage("Login verified. Redirecting into Block Market...");
       }
 
+      router.replace("/app");
+    }
+
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session) {
+        redirectToApp();
+      }
+    });
+
+    async function resolveSession() {
       try {
-        const supabase = getSupabaseBrowserClient();
+        const {
+          data: { session }
+        } = await supabase.auth.getSession();
+
+        if (session) {
+          redirectToApp();
+          return;
+        }
+
+        const code = new URLSearchParams(window.location.search).get("code");
+
+        if (!code) {
+          window.setTimeout(async () => {
+            const {
+              data: { session: delayedSession }
+            } = await supabase.auth.getSession();
+
+            if (delayedSession) {
+              redirectToApp();
+              return;
+            }
+
+            if (isMounted) {
+              setError("We could not verify that login link. Try requesting a new one.");
+            }
+          }, 1200);
+
+          return;
+        }
+
         const { error: exchangeError } =
           await supabase.auth.exchangeCodeForSession(code);
 
@@ -31,35 +68,32 @@ export default function AuthCallbackPage() {
           throw exchangeError;
         }
 
-        if (isMounted) {
-          setMessage("Login verified. Redirecting into Block Market...");
-        }
-
-        router.replace("/app");
+        redirectToApp();
       } catch (callbackError) {
+        console.error("Supabase callback error", callbackError);
+
         if (isMounted) {
-          setError(
-            callbackError.message ||
-              "We could not verify that login link. Try requesting a new one."
-          );
+          setError("We could not verify that login link. Try requesting a new one.");
         }
       }
     }
 
-    exchangeCode();
+    resolveSession();
 
     return () => {
       isMounted = false;
+      subscription.unsubscribe();
     };
   }, [router]);
 
   return (
     <main className="shell">
       <section className="card">
-        <p className="eyebrow">Auth Callback</p>
+        <p className="eyebrow">Verifying Access</p>
         <h1 className="title">Checking your CMU login.</h1>
         <p className="lead">
-          Supabase is exchanging the magic-link auth code for a real session.
+          We&apos;re confirming your email so Block Market stays inside a more
+          trusted campus network.
         </p>
 
         {error ? (
