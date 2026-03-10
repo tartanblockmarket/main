@@ -76,34 +76,34 @@ export default function AppHomePage() {
         </div>
 
         <p className="lead">
-          Session active for <strong>{email}</strong>. This is the protected app
-          shell; buyer and seller flows can now be built behind the CMU email
-          gate.
+          Signed in as <strong>{email}</strong>. This verified CMU access is the
+          trust layer for Block Market, helping buyers and sellers feel safer
+          about every order placed through the platform.
         </p>
 
         <div className="grid">
           <section className="panel">
-            <h2>Buyer side</h2>
+            <h2>Buyer confidence</h2>
             <p>
-              Grubhub-style request flow with restaurant search, item entry, and
-              visible market pricing.
+              Buyers can request food knowing the marketplace is limited to
+              verified CMU email holders rather than anonymous accounts.
             </p>
           </section>
 
           <section className="panel">
-            <h2>Seller side</h2>
+            <h2>Seller trust</h2>
             <p>
-              Uber Eats-style queue of available requests, payout preview after
-              fees, and proof-of-purchase submission.
+              Sellers get more confidence that requests come from real members
+              of the campus community before they spend blocks on an order.
             </p>
           </section>
 
           <section className="panel">
-            <h2>Identity model</h2>
+            <h2>Verification model</h2>
             <p>
-              Access currently means control of a <code>cmu.edu</code> inbox.
-              Stronger school verification can be layered in later with SSO or a
-              directory-backed check.
+              Right now, trust starts with proving control of a valid{" "}
+              <code>cmu.edu</code> inbox. Stronger school verification can be
+              layered in later if needed.
             </p>
           </section>
         </div>

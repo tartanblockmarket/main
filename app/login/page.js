@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { getSupabaseBrowserClient } from "../../lib/supabase/client";
 
 const CMU_EMAIL_SUFFIX = "cmu.edu";
@@ -55,14 +54,11 @@ export default function LoginPage() {
       }
 
       setSuccess(
-        `Magic link sent to ${normalizedEmail}. Open that inbox and click the link to continue.`
+        `Check ${normalizedEmail} for your secure sign-in link. Opening it confirms that you control that CMU inbox.`
       );
       setEmail(normalizedEmail);
-    } catch (submissionError) {
-      setError(
-        submissionError.message ||
-          "We could not start the login flow. Check your Supabase config and try again."
-      );
+    } catch {
+      setError("We could not send your login link. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -71,12 +67,12 @@ export default function LoginPage() {
   return (
     <main className="shell">
       <section className="card">
-        <p className="eyebrow">CMU Access Required</p>
-        <h1 className="title">Log in with your CMU email.</h1>
+        <p className="eyebrow">Verified CMU Access</p>
+        <h1 className="title">Trusted purchases start with a CMU email.</h1>
         <p className="lead">
-          Block Market currently allows sign-in only for mailboxes ending in{" "}
-          <strong>cmu.edu</strong>. After the domain check passes, Supabase
-          sends a magic link and you finish sign-in from that inbox.
+          Block Market is built for the Carnegie Mellon community. We verify
+          every account through a <strong>cmu.edu</strong> inbox so buyers and
+          sellers can make purchases inside a more trusted campus network.
         </p>
 
         <form className="form" onSubmit={handleSubmit}>
@@ -101,28 +97,19 @@ export default function LoginPage() {
           ) : null}
 
           <button className="button" type="submit" disabled={isLoading}>
-            {isLoading ? "Sending link..." : "Send magic link"}
+            {isLoading ? "Sending link..." : "Send secure login link"}
           </button>
         </form>
 
         <p className="meta">
-          This verifies mailbox ownership, not enrollment status. Anyone who can
-          receive and click a magic link sent to a valid <code>cmu.edu</code>{" "}
-          address can sign in.
+          CMU email verification helps reduce scams, raise accountability, and
+          make every purchase feel more trustworthy for both sides of the
+          marketplace.
         </p>
 
         <p className="meta">
-          Need to wire up Supabase first? Copy{" "}
-          <code>.env.local.example</code> into a local <code>.env.local</code>{" "}
-          and fill in the public URL and anon key.
-        </p>
-
-        <p className="meta">
-          After login, users land in the early app shell at{" "}
-          <Link className="link" href="/app">
-            /app
-          </Link>
-          .
+          Access is limited to people who can open a valid <code>cmu.edu</code>{" "}
+          inbox and complete the login link.
         </p>
       </section>
     </main>
