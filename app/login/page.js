@@ -112,8 +112,9 @@ export default function LoginPage() {
         </p>
 
         <p className="meta">
-          Need to wire up Supabase first? Copy <code>.env.example</code> into a
-          local <code>.env.local</code> and fill in the public URL and anon key.
+          Need to wire up Supabase first? Copy{" "}
+          <code>.env.local.example</code> into a local <code>.env.local</code>{" "}
+          and fill in the public URL and anon key.
         </p>
 
         <p className="meta">

@@ -21,13 +21,16 @@ This verifies mailbox control, not enrollment status.
    npm install
    ```
 
-2. Create `.env.local` from `.env.example` and fill in:
+2. Create `.env.local` from `.env.local.example` and fill in:
 
    ```env
    NEXT_PUBLIC_SUPABASE_URL=...
    NEXT_PUBLIC_SUPABASE_ANON_KEY=...
    NEXT_PUBLIC_ALLOW_ANY_EMAIL=false
    ```
+
+   `.env.example` is intentionally value-free and exists only to explain the
+   repo policy.
 
 3. Start the app:
 
